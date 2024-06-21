@@ -406,13 +406,65 @@ QVariantMap QgsGdalProviderBase::decodeGdalUri( const QString &uri )
   {
     path = path.mid( vsiPrefix.count() );
 
-    const thread_local QRegularExpression vsiRegex( QStringLiteral( "(?:\\.zip|\\.tar|\\.gz|\\.tar\\.gz|\\.tgz)([^|]+)" ) );
-    const QRegularExpressionMatch match = vsiRegex.match( path );
-    if ( match.hasMatch() )
+    //const thread_local QRegularExpression vsiRegex( QStringLiteral( "(?:\\.zip|\\.tar|\\.gz|\\.tar\\.gz|\\.tgz)([^|]+)" ) );
+    //QRegularExpressionMatch match = vsiRegex.match( path );
+
+    QStringList compressionExtenstionList;
+    compressionExtenstionList << ".zip" << ".tar" << ".gz" << ".tar" << ".gz" << ".tgz";
+
+    // find last extension-substring that occured and remember it's index
+    int lastExtOccurencePos = -1;
+    int lastOccuredExtensionSz = 0;
+    for (const auto& ext : compressionExtenstionList)
     {
-      vsiSuffix = match.captured( 1 );
-      path = path.remove( match.capturedStart( 1 ), match.capturedLength( 1 ) );
+      int lastExtIndx = path.lastIndexOf(ext);
+      if (lastExtIndx > lastExtOccurencePos)
+      {
+          lastExtOccurencePos = lastExtIndx;
+          lastOccuredExtensionSz = ext.size();
+      }
     }
+
+    if (lastExtOccurencePos > 0)
+    {
+      // check http[s]-domain index boundaries
+      const thread_local QRegularExpression vsiDomainPartRegex( QStringLiteral( "http[s]:?//([^/]*)" ) );
+      const QRegularExpressionMatch domainMatch = vsiDomainPartRegex.match( path );
+
+      bool bIsExtPosValid = lastExtOccurencePos > 0;
+      if (domainMatch.hasMatch())
+      {
+        int domainEndIndx = domainMatch.capturedEnd( 1 );
+        if (domainEndIndx >= lastExtOccurencePos)
+        {
+          bIsExtPosValid = false;
+        }
+      }
+
+      // get vsisuffix
+      if (bIsExtPosValid)
+      {
+        int vsiSuffixStartIndx = lastExtOccurencePos + lastOccuredExtensionSz;
+        if (vsiSuffixStartIndx == path.size())
+        {
+          vsiSuffix.clear();
+        }
+        else
+        {
+          vsiSuffix = path.mid(vsiSuffixStartIndx, path.size()); //
+          path = path.remove( vsiSuffixStartIndx, vsiSuffix.size());
+        }
+      }
+      else
+      {
+        vsiSuffix.clear();
+      }
+    }
+    else
+    {
+      vsiSuffix.clear();
+    }
+
   }
   else
   {
