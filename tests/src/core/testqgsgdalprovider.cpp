@@ -153,6 +153,12 @@ void TestQgsGdalProvider::decodeUri()
   QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/vsicurl/ftp://www.qgis.zip.org/dataset.tif" ) );
   QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "" ) );
 
+  //test .zip in domain-part of http[s]
+  uri = QStringLiteral( "/vsicurl/https://www.qgis.zip/dataset.tif" );
+  components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
+  QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/vsicurl/https://www.qgis.zip/dataset.tif" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "" ) );
+
   // TODO test .[extension] in non-domain-part
   //uri = QStringLiteral( "/vsicurl/https://www.qgis.org/dir.zip/archive.zip/dataset.tif" );
   //components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
