@@ -406,23 +406,13 @@ QVariantMap QgsGdalProviderBase::decodeGdalUri( const QString &uri )
   {
     path = path.mid( vsiPrefix.count() );
 
-    const thread_local QRegularExpression vsiRegex( QStringLiteral( "(?:[^/]/[A-Za-z0-9_]+\\.zip/|\\.tar/|\\.gz/|\\.tar\\.gz/|\\.tgz/)([^|]+)" ) );
+    const thread_local QRegularExpression vsiRegex( QStringLiteral( "(?:\\.zip|\\.tar|\\.tar\\.gz|\\.tgz)([\\\\/][^|]+)" ) );
     QRegularExpressionMatch match = vsiRegex.match( path );
 
     if (match.hasMatch())
     {
-        // return '/' eaten by regexp due to (q)fileInfo path requirements
-        vsiSuffix = match.captured(1);
-        if (!vsiSuffix.isEmpty() && !vsiSuffix.startsWith("/"))
-        {
-            vsiSuffix = "/" + vsiSuffix;
-        }
-        // respectively, cheap away from path
-        path = path.remove( match.capturedStart(1), match.capturedLength(1));
-        if (path.endsWith("/"))
-        {
-            path.resize(path.size() - 1);
-        }
+      vsiSuffix = match.captured( 1 );
+      path = path.remove( match.capturedStart( 1 ), match.capturedLength( 1 ) );
     }
   }
   else

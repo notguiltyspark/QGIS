@@ -147,36 +147,41 @@ void TestQgsGdalProvider::decodeUri()
   QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/vsicurl/https://www.qgis.zip.org/dataset.tif" ) );
   QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "" ) );
 
-  //test .[extension] in domain-part of ftp
-  uri = QStringLiteral( "/vsicurl/ftp://www.qgis.zip.org/dataset.tif" );
+  //test .zip archive with non-latin symbol in the path. Hence QStringLiteral is not used here in uri-creation
+  uri = "/vsizip/α.zip/img.tif";
   components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
-  QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/vsicurl/ftp://www.qgis.zip.org/dataset.tif" ) );
-  QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "" ) );
+  QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "α.zip" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiPrefix" ) ).toString(), QString( "/vsizip/" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "/img.tif" ) );
 
-  //test .zip in domain-part of http[s]
-  uri = QStringLiteral( "/vsicurl/https://www.qgis.zip/dataset.tif" );
+  // test .tar archive with non-latin symbol in local path
+  uri = "/vsitar/path/arc.tar/img.tif";
   components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
-  QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/vsicurl/https://www.qgis.zip/dataset.tif" ) );
-  QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "" ) );
+  QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "path/arc.tar" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiPrefix" ) ).toString(), QString( "/vsitar/" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "/img.tif" ) );
 
-  // TODO test .[extension] in non-domain-part
-  //uri = QStringLiteral( "/vsicurl/https://www.qgis.org/dir.zip/archive.zip/dataset.tif" );
+  //  test windows path with non-latin symbol
+  uri = "/vsizip/C:\arc.zip/img.tif";
+  components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
+  QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "C:\arc.zip" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiPrefix" ) ).toString(), QString( "/vsizip/" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "/img.tif" ) );
+
+  // test backslash and non-latin symbol in the path after .[extenstion]
+  uri = "/vsizip/C:\\arc.zip\\img.tif";
+  components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
+  QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "C:\\arc.zip" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiPrefix" ) ).toString(), QString( "/vsizip/" ) );
+  QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "\\img.tif" ) );
+
+  // TODO: [zip] in TLD domain - this test will fail.
+  // Due to recent updates of web-standards allowing .zip in domain - it has to be protected from the zip-extension check
+  //uri = QStringLiteral( "/vsizip/vsicurl/https://tld.zip/img.tif" );
   //components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
-  //QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/vsicurl/https://www.qgis.org/dir.zip/archive.zip" ) );
-  //QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "dataset.tif" ) );
-
-  // TODO test .[extension] in non-http[s] in local path
-  //uri = QStringLiteral( "/vsizip//home/to/path/archive.zippolino/file.zip/my.tif" );
-  //components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
-  //QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/home/to/path/archive.zippolino/file.zip" ) );
-  //QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "/my.tif" ) );
-
-  // TODO test .[raster_ext].gz
-  //uri = QStringLiteral( "/vsizip//home/to/path/file.tiff.gz" );
-  //components = QgsProviderRegistry::instance()->decodeUri( QStringLiteral( "gdal" ), uri );
-  //QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/home/to/path/archive.zippolino/file.zip" ) );
-  //QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "/my.tif" ) );
-
+  //QCOMPARE( components.value( QStringLiteral( "path" ) ).toString(), QString( "/vsizip/vsicurl/https://tld.zip/img.tif" ) );
+  //QCOMPARE( components.value( QStringLiteral( "vsiPrefix" ) ).toString(), QString( "" ) );
+  //QCOMPARE( components.value( QStringLiteral( "vsiSuffix" ) ).toString(), QString( "" ) );
 }
 
 void TestQgsGdalProvider::encodeUri()
