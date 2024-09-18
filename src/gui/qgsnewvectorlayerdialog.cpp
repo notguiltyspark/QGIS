@@ -155,8 +155,8 @@ void QgsNewVectorLayerDialog::mTypeBox_currentIndexChanged( int index )
 
   constexpr int ESRI_TEXT_MAX_WIDTH_INCLUSIVE = 254;
   constexpr int ESRI_SHORT_INTEGER_MAX_WIDTH_INCLUSIVE = 4;
-//  constexpr int ESRI_LONG_INTEGER_MAX_WIDTH_INCLUSIVE = 9;
-//  constexpr int ESRI_FLOAT_MAX_WIDTH_INCLUSIVE = 13;
+  //constexpr int ESRI_LONG_INTEGER_MAX_WIDTH_INCLUSIVE = 9;
+  //constexpr int ESRI_FLOAT_MAX_WIDTH_INCLUSIVE = 13;
   constexpr int ESRI_DOUBLE_MAX_WIDTH_INCLUSIVE = 13;
   constexpr int ESRI_DATE_MAX_WIDTH_INCLUSIVE = 8;
 
@@ -178,7 +178,7 @@ void QgsNewVectorLayerDialog::mTypeBox_currentIndexChanged( int index )
 
     case 2: // Decimal number
       mWidth->setMaximum(ESRI_DOUBLE_MAX_WIDTH_INCLUSIVE);
-      if ( mWidth->text().toInt() < 1 || mWidth->text().toInt() > ESRI_DOUBLE_MAX_WIDTH_INCLUSIVE )
+      if ( mWidth->value() < 1 || mWidth->value() > ESRI_DOUBLE_MAX_WIDTH_INCLUSIVE )
         mWidth->setValue( ESRI_DOUBLE_MAX_WIDTH_INCLUSIVE );
 
       if ( mPrecision->text().toInt() < 1 || mPrecision->text().toInt() > 15 )
@@ -189,7 +189,7 @@ void QgsNewVectorLayerDialog::mTypeBox_currentIndexChanged( int index )
     case 3: // Date
       mWidth->setMaximum(ESRI_DATE_MAX_WIDTH_INCLUSIVE);
       if ( mWidth->value() < 1 || mWidth->value() > ESRI_DATE_MAX_WIDTH_INCLUSIVE )
-          mWidth->setValue( ESRI_DATE_MAX_WIDTH_INCLUSIVE );
+        mWidth->setValue( ESRI_DATE_MAX_WIDTH_INCLUSIVE );
       mPrecision->setEnabled( false );
       break;
 
