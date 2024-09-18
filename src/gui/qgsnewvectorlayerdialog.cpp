@@ -155,8 +155,8 @@ void QgsNewVectorLayerDialog::mTypeBox_currentIndexChanged( int index )
 
   constexpr int ESRI_TEXT_MAX_WIDTH_INCLUSIVE = 254;
   constexpr int ESRI_SHORT_INTEGER_MAX_WIDTH_INCLUSIVE = 4;
-  //constexpr int ESRI_LONG_INTEGER_MAX_WIDTH_INCLUSIVE = 9;
-  //constexpr int ESRI_FLOAT_MAX_WIDTH_INCLUSIVE = 13;
+  // constexpr int ESRI_LONG_INTEGER_MAX_WIDTH_INCLUSIVE = 9;
+  // constexpr int ESRI_FLOAT_MAX_WIDTH_INCLUSIVE = 13;
   constexpr int ESRI_DOUBLE_MAX_WIDTH_INCLUSIVE = 13;
   constexpr int ESRI_DATE_MAX_WIDTH_INCLUSIVE = 8;
 
