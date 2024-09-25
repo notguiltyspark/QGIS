@@ -100,6 +100,15 @@ void QgisAppInterface::addCustomActionForLayer( QAction *action, QgsMapLayer *la
   menuProvider->addLegendLayerActionForLayer( action, layer );
 }
 
+void QgisAppInterface::addCustomActionForGroup(QAction *action, const QString &menu )
+{
+  QgsAppLayerTreeViewMenuProvider *menuProvider = dynamic_cast<QgsAppLayerTreeViewMenuProvider *>( qgis->layerTreeView()->menuProvider() );
+  if ( !menuProvider )
+    return;
+
+  menuProvider->addLegendLayerActionForGroup( action, menu );
+}
+
 bool QgisAppInterface::removeCustomActionForLayerType( QAction *action )
 {
   QgsAppLayerTreeViewMenuProvider *menuProvider = dynamic_cast<QgsAppLayerTreeViewMenuProvider *>( qgis->layerTreeView()->menuProvider() );
@@ -107,6 +116,24 @@ bool QgisAppInterface::removeCustomActionForLayerType( QAction *action )
     return false;
 
   return menuProvider->removeLegendLayerAction( action );
+}
+
+bool QgisAppInterface::removeCustomActionForGroup( QAction *action )
+{
+    QgsAppLayerTreeViewMenuProvider *menuProvider = dynamic_cast<QgsAppLayerTreeViewMenuProvider *>( qgis->layerTreeView()->menuProvider() );
+    if ( !menuProvider )
+      return false;
+
+    return menuProvider->removeLegendLayerActionForGroup( action );
+}
+
+bool QgisAppInterface::removeCustomActionsForGroup( const QString &menu )
+{
+    QgsAppLayerTreeViewMenuProvider *menuProvider = dynamic_cast<QgsAppLayerTreeViewMenuProvider *>( qgis->layerTreeView()->menuProvider() );
+    if ( !menuProvider )
+      return false;
+
+    return menuProvider->removeLegendLayerActionsForGroup( menu );
 }
 
 void QgisAppInterface::zoomFull()

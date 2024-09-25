@@ -58,7 +58,11 @@ class APP_EXPORT QgisAppInterface : public QgisInterface
     void addCustomActionForLayerType( QAction *action, QString menu,
                                       Qgis::LayerType type, bool allLayers ) override;
     void addCustomActionForLayer( QAction *action, QgsMapLayer *layer ) override;
+    void addCustomActionForGroup( QAction *action, const QString& menu ) override;
+
     bool removeCustomActionForLayerType( QAction *action ) override;
+    bool removeCustomActionForGroup( QAction *action ) override;
+    bool removeCustomActionsForGroup( const QString& menu ) override;
 
     /* Exposed functions */
 

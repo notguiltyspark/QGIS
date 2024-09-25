@@ -130,10 +130,30 @@ class GUI_EXPORT QgisInterface : public QObject
     virtual void addCustomActionForLayer( QAction *action, QgsMapLayer *layer ) = 0;
 
     /**
+     * Add action to context menu for all group-nodes in the layer tree.
+     * \see addCustomActionForGroup()
+     */
+    virtual void addCustomActionForGroup( QAction *action, const QString& menu ) = 0;
+
+    /**
      * Remove action for layers in the layer tree previously added with addCustomActionForLayerType()
      * \see addCustomActionForLayerType()
      */
     virtual bool removeCustomActionForLayerType( QAction *action ) = 0;
+
+    /**
+     * Remove action from the context menu for all group-nodes in the layer tree
+     * previously added with addCustomActionForGroup().
+     * \see addCustomActionForGroup()
+     */
+    virtual bool removeCustomActionForGroup( QAction *action ) = 0;
+
+    /**
+     * Remove submenu from context menu for all group-nodes in the layer tree
+     * previously added with addCustomActionForGroup().
+     * \see addCustomActionForGroup()
+     */
+    virtual bool removeCustomActionsForGroup( const QString& menu ) = 0;
 
     /**
      * Returns a list of all map canvases open in the app.

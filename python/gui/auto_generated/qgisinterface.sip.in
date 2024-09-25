@@ -67,11 +67,34 @@ in order for this method to have any effect.
 .. seealso:: :py:func:`addCustomActionForLayerType`
 %End
 
+    virtual void addCustomActionForGroup( QAction *action, const QString& menu ) = 0;
+%Docstring
+Add action to context menu for all group-nodes in the layer tree.
+
+.. seealso:: :py:func:`addCustomActionForGroup`
+%End
+
     virtual bool removeCustomActionForLayerType( QAction *action ) = 0;
 %Docstring
 Remove action for layers in the layer tree previously added with :py:func:`~QgisInterface.addCustomActionForLayerType`
 
 .. seealso:: :py:func:`addCustomActionForLayerType`
+%End
+
+    virtual bool removeCustomActionForGroup( QAction *action ) = 0;
+%Docstring
+Remove action from the context menu for all group-nodes in the layer tree
+previously added with :py:func:`~QgisInterface.addCustomActionForGroup`.
+
+.. seealso:: :py:func:`addCustomActionForGroup`
+%End
+
+    virtual bool removeCustomActionsForGroup( const QString& menu ) = 0;
+%Docstring
+Remove submenu from context menu for all group-nodes in the layer tree
+previously added with :py:func:`~QgisInterface.addCustomActionForGroup`.
+
+.. seealso:: :py:func:`addCustomActionForGroup`
 %End
 
     virtual QList< QgsMapCanvas * > mapCanvases() = 0;
