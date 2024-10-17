@@ -2697,7 +2697,7 @@ QList< QgsProviderSublayerDetails > QgsOgrProviderUtils::querySubLayerList( int 
             if ( gType == wkbTINZ )
               gType = wkbMultiPolygon25D;
             bool hasZ = wkbHasZ( gType );
-            gType = QgsOgrProviderUtils::ogrWkbSingleFlatten( gType );
+            //gType = QgsOgrProviderUtils::ogrWkbSingleFlatten( gType );
             fCount[gType] = fCount.value( gType ) + pasCounter[i].nCount;
             if ( hasZ )
               fHasZ.insert( gType );
