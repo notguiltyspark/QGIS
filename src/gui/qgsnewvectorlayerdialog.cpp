@@ -106,13 +106,13 @@ QgsNewVectorLayerDialog::QgsNewVectorLayerDialog( QWidget *parent, Qt::WindowFla
 
   mFileFormatComboBox->setCurrentIndex( 0 );
 
-  mPrecision->setMinimum(1);
+  mPrecision->setMinimum( 1 );
   mPrecision->setClearValue( 6 );
-  mPrecision->setMaximum(15);
-  mPrecision->setExpressionsEnabled(false);
+  mPrecision->setMaximum( 15 );
+  mPrecision->setExpressionsEnabled( false );
 
-  mWidth->setMinimum(1);
-  mWidth->setExpressionsEnabled(false);
+  mWidth->setMinimum( 1 );
+  mWidth->setExpressionsEnabled( false );
 
   mTypeBox->setCurrentIndex( 0 );
 
@@ -298,21 +298,21 @@ void QgsNewVectorLayerDialog::mTypeBox_currentIndexChanged_formatShapeESRI( int 
 
     case 1: // Whole number
       mWidth->setMaximum( ESRI_SHPF_SHORT_INTEGER_MAX_WIDTH_INCLUSIVE );
-      mWidth->setClearValueMode(QgsSpinBox::ClearValueMode::MaximumValue);
+      mWidth->setClearValueMode( QgsSpinBox::ClearValueMode::MaximumValue );
 
       mPrecision->setEnabled( false );
       break;
 
     case 2: // Decimal number
       mWidth->setMaximum( ESRI_SHPF_DOUBLE_MAX_WIDTH_INCLUSIVE );
-      mWidth->setClearValueMode(QgsSpinBox::ClearValueMode::MaximumValue);
+      mWidth->setClearValueMode( QgsSpinBox::ClearValueMode::MaximumValue );
 
       mPrecision->setEnabled( true );
       break;
 
     case 3: // Date
       mWidth->setMaximum( ESRI_SHPF_DATE_MAX_WIDTH_INCLUSIVE );
-      mWidth->setClearValueMode(QgsSpinBox::ClearValueMode::MaximumValue);
+      mWidth->setClearValueMode( QgsSpinBox::ClearValueMode::MaximumValue );
 
       mPrecision->setEnabled( false );
       break;
