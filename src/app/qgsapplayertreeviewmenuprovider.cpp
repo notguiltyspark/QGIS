@@ -1070,9 +1070,9 @@ QList<LegendLayerAction> QgsAppLayerTreeViewMenuProvider::groupLegendLayerAction
   return mGroupLegendLayerActionList;
 }
 
-QList<QAction *> QgsAppLayerTreeViewMenuProvider::groupMenuActions( const QString &menu) const
+QList<QAction* > QgsAppLayerTreeViewMenuProvider::groupMenuActions( const QString& menu) const
 {
-  QList<QAction *> actionForGroupMenuList;
+  QList<QAction*> actionForGroupMenuList;
   for (const auto &groupLegendLayerAction : mGroupLegendLayerActionList)
   {
     if (groupLegendLayerAction.menu == menu)
