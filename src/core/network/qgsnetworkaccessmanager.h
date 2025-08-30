@@ -54,6 +54,8 @@ class CORE_EXPORT QgsNetworkRequestParameters
     {
       AttributeInitiatorClass = QNetworkRequest::User + 3000, //!< Class name of original object which created the request
       AttributeInitiatorRequestId, //!< Internal ID used by originator object to identify requests
+      AttributeUserAgentSuffix, //!< Suffix for already-computed UA
+      AttributeUserAgentOverride //!< Full override of already-computed UA (custom UA)
     };
 
     QgsNetworkRequestParameters() = default;

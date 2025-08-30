@@ -308,6 +308,26 @@ QNetworkReply *QgsNetworkAccessManager::createRequest( QNetworkAccessManager::Op
   if ( !userAgent.isEmpty() )
     userAgent += ' ';
   userAgent += QStringLiteral( "QGIS/%1/%2" ).arg( Qgis::versionInt() ).arg( QSysInfo::prettyProductName() );
+
+  // check for custom User-Agent (or additional suffix)
+  constexpr auto attrOverride = static_cast< QNetworkRequest::Attribute >( QgsNetworkRequestParameters::AttributeUserAgentOverride );
+  constexpr auto attrSuffix = static_cast< QNetworkRequest::Attribute >( QgsNetworkRequestParameters::AttributeUserAgentSuffix );
+
+  const QVariant uaOverride = ( req.attribute( attrOverride ) );
+  if ( uaOverride.isValid() && !uaOverride.toString().isEmpty() )
+  {
+    userAgent = uaOverride.toString();
+  }
+  else
+  {
+    const QVariant uaSuffix = req.attribute( attrSuffix );
+    if ( uaSuffix.isValid() && !uaSuffix.toString().isEmpty() )
+    {
+      userAgent += QLatin1Char( ' ' );
+      userAgent += uaSuffix.toString();
+    }
+  }
+
   pReq->setRawHeader( "User-Agent", userAgent.toLatin1() );
 
 #ifndef QT_NO_SSL
