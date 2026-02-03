@@ -306,23 +306,12 @@ QNetworkReply *QgsNetworkAccessManager::createRequest( QNetworkAccessManager::Op
     userAgent += ' ';
   userAgent += QStringLiteral( "QGIS/%1/%2" ).arg( Qgis::versionInt() ).arg( QSysInfo::prettyProductName() );
 
-  // check for custom User-Agent (or additional suffix)
-  constexpr auto attrOverride = static_cast< QNetworkRequest::Attribute >( QgsNetworkRequestParameters::AttributeUserAgentOverride );
-  constexpr auto attrSuffix = static_cast< QNetworkRequest::Attribute >( QgsNetworkRequestParameters::AttributeUserAgentSuffix );
-
-  const QVariant uaOverride = ( req.attribute( attrOverride ) );
-  if ( uaOverride.isValid() && !uaOverride.toString().isEmpty() )
+    // check for custom User-Agent prefix
+  constexpr auto attrPrefix = static_cast< QNetworkRequest::Attribute >( QgsNetworkRequestParameters::AttributeUserAgentPrefix );
+  const QVariant userAggentCustomPrefix = pReq->attribute(static_cast< QNetworkRequest::Attribute >( QgsNetworkRequestParameters::AttributeUserAgentPrefix ));
+  if ( userAggentCustomPrefix.isValid() && !userAggentCustomPrefix.toString().isEmpty() )
   {
-    userAgent = uaOverride.toString();
-  }
-  else
-  {
-    const QVariant uaSuffix = req.attribute( attrSuffix );
-    if ( uaSuffix.isValid() && !uaSuffix.toString().isEmpty() )
-    {
-      userAgent += QLatin1Char( ' ' );
-      userAgent += uaSuffix.toString();
-    }
+    userAgent.prepend(userAggentCustomPrefix.toString() + QStringLiteral( " " ) );
   }
 
   pReq->setRawHeader( "User-Agent", userAgent.toLatin1() );
